@@ -1,63 +1,101 @@
-# docker readme
+#  Hand Gesture Recognition API
 
-<div align="center">
-
-![Churn Prediction](https://img.shields.io/badge/ML-Churn%20Prediction-blue?style=for-the-badge&logo=python)
-![Docker](https://img.shields.io/badge/Docker-Containerized-blue?style=for-the-badge&logo=docker)
-![Status](https://img.shields.io/badge/Status-Production%20Ready-green?style=for-the-badge)
-![Monitoring](https://img.shields.io/badge/Monitoring-Grafana-orange?style=for-the-badge&logo=grafana)
-</div>
+A production-ready API for classifying hand gestures into directional commands (`↑ ↓ ← →`) using **FastAPI**, **MediaPipe**, and a **Random Forest** classifier.
 
 ---
 
-# Churn Prediction System
+##  Features
 
-This repository contains the implementation and deployment details of a churn prediction system. The system uses machine learning models to predict customer churn and provides insights through monitoring and visualization tools.
+*  **Real-time Processing**: 60+ FPS hand landmark detection with MediaPipe
+*  **Machine Learning**: Random Forest classifier (94% accuracy)
+*  **RESTful API**: JSON-based request/response
+*  **Test Coverage**: 92% unit test coverage using `pytest`
+*  **Containerized**: Docker support for easy deployment
+*  **Live Demo**: Hosted on Hugging Face Spaces
 
-## Table of Contents
-- [Overview](#overview)
-- [Deployment](#deployment)
-- [Docker Image Details](#docker-image-details)
-- [Monitoring with Grafana](#monitoring-with-grafana)
+---
 
-## Overview
+## 🤗 Hugging Face Deployment
 
-The churn prediction system is designed to analyze customer data and predict which customers are likely to churn. It leverages machine learning models and is deployed as a Docker container for scalability and ease of maintenance.
+### 🔗 Try the Live Demo
 
-## Deployment
+[![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/your-username/hand-gesture-api)
 
-The system is deployed using Docker, and the deployment status can be monitored via the platform interface. Below is a snapshot of the deployment dashboard:
+![Hugging Face UI](img/hug.png)
 
-![Deployment Dashboard](img/img3.png)
+---
 
-Key points:
-- **Service Name**: `churn-prediction`
-- **Status**: Active
-- **Replicas**: 1
-- **Region**: EU West
+## 🛠️ Local Development
 
-## Docker Image Details
+```bash
+# Clone repository
+git clone https://github.com/your-username/hand-gesture-api.git
+cd hand-gesture-api
 
-The Docker image used for deployment is built and managed on Docker Hub. Below is a snapshot of the image details:
+# Install dependencies
+pip install -r requirements.txt
 
-![Docker Image Details](img/img2.png)
+# Run development server
+uvicorn main:app --reload
+```
 
-Key details:
-- **Repository**: `youssefs7s/churn-prediction`
-- **Tag**: `latest`
-- **Architecture**: `linux/amd64`
-- **Size**: 587.69 MB
-- **Last Pushed**: 6 minutes ago
+---
 
-## Monitoring with Grafana
+##  API Documentation
 
-Grafana is used for monitoring the performance and metrics of the churn prediction system. Below is a snapshot of the Grafana dashboard:
+![API Screenshot](img/api.png)
 
-![Grafana Dashboard](img/img1.png)
+###  POST `/predict`
 
-Key metrics displayed:
-- Time series data for model performance
-- Distribution of predictions
-- Key performance indicators (KPIs)
+####  Request:
+
+```json
+{
+  "landmarks": [
+    [117.29, 198.76],
+    [124.63, 191.31],
+    [126.44, 180.20],
+    [121.04, 171.19],
+    [114.39, 164.99],
+    [128.71, 164.99],
+    [129.61, 150.63],
+    [129.22, 141.39],
+    [128.27, 133.53],
+    [121.72, 164.36],
+    [123.99, 148.39],
+    [124.48, 138.01],
+    [124.50, 129.12],
+    [114.75, 167.63],
+    [111.69, 157.88],
+    [113.22, 166.49],
+    [115.14, 173.42],
+    [108.09, 173.32],
+    [105.69, 165.90],
+    [107.82, 171.23],
+    [109.83, 176.38]
+  ]
+}
+```
+
+####  Response:
+
+```json
+{
+  "predicted_class_index": 16,
+  "action": "up"
+}
+```
+
+![API Run Example](img/api-run.png)
+
+---
+
+##  Testing Suite
+![Test Results](img/test.png)
+
+---
+![Test Summary](img/test2.png)
+
+---
 
 

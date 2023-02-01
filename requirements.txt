@@ -1,6 +1,6 @@
-prefect
-mlflow
-scikit-learn
-numpy>=1.21.0
-pandas
-matplotlib
+gradio
+mediapipe
+scikit-learn==1.5.0
+tensorflow
+numpy
+Pillow

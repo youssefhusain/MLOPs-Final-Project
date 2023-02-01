@@ -2,9 +2,9 @@ name: CI | Test & Build Docker Image
 
 on:
   push:
-    branches: [ docker ]
+    branches: [ main ]
   pull_request:
-    branches: [ docker ]
+    branches: [ main ]
 
 env:
   DOCKERHUB_REPO: ${{ secrets.DOCKERHUB_USERNAME }}/churn-prediction
@@ -17,7 +17,7 @@ jobs:
 
     - uses: actions/setup-python@v5
       with:
-        python-version: "3.10"  # Fixed to match Dockerfile
+        python-version: "3.8"
 
     - name: Install dependencies & run tests
       run: |
@@ -38,8 +38,7 @@ jobs:
         docker build \
           -t $DOCKERHUB_REPO:$TAG \
           -t $DOCKERHUB_REPO:latest \
-          .  # Changed from ./app to . (root directory)
+          ./app
 
         docker push $DOCKERHUB_REPO:$TAG
         docker push $DOCKERHUB_REPO:latest
-        
