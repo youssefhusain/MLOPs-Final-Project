@@ -2,7 +2,6 @@
 
 This project implements a gesture-controlled game using machine learning for gesture recognition. Players can control the game using hand gestures captured through their webcam.
 
-
 ## 🚀 Quick Start
 
 1. Install the Live Server extension in VS Code:
