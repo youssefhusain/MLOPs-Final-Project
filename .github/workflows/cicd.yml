@@ -1,0 +1,45 @@
+name: CI | Test & Build Docker Image
+
+on:
+  push:
+    branches: [ docker ]
+  pull_request:
+    branches: [ docker ]
+
+env:
+  DOCKERHUB_REPO: ${{ secrets.DOCKERHUB_USERNAME }}/churn-prediction
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.10"  # Fixed to match Dockerfile
+
+    - name: Install dependencies & run tests
+      run: |
+        python -m pip install --quiet --upgrade pip
+        pip install -r requirements.txt
+        # Uncomment below to run tests
+        # python -m pytest tests/
+
+    - name: Docker Hub – login
+      run: |
+        echo "${{ secrets.DOCKERHUB_TOKEN }}" \
+          | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+    - name: Build & Push Docker Image
+      env:
+        TAG: ${{ github.sha }}
+      run: |
+        docker build \
+          -t $DOCKERHUB_REPO:$TAG \
+          -t $DOCKERHUB_REPO:latest \
+          .  # Changed from ./app to . (root directory)
+
+        docker push $DOCKERHUB_REPO:$TAG
+        docker push $DOCKERHUB_REPO:latest
+        
