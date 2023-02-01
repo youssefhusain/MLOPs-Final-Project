@@ -1,48 +1,126 @@
-# ML Course Final Project - Gesture Control Game
 
-This project implements a gesture-controlled game using machine learning for gesture recognition. Players can control the game using hand gestures captured through their webcam.
+## model select 
+In this Branche  , I test a classification system using powerful machine learning models such as:
 
 
-## 🚀 Quick Start
 
-1. Install the Live Server extension in VS Code:
-   - Open VS Code
-   - Go to Extensions (Ctrl+Shift+X)
-   - Search for "Live Server"
-   - Install the extension by Ritwick Dey
+###  Objectives
+- Compare performance across diverse ML algorithms
+- Optimize hyperparameters through systematic grid search
+- Implement ensemble methods for enhanced accuracy
+- Track and visualize experiment results using MLflow
 
-2. Launch the project:
-   - Right-click on `index.html`
-   - Select "Open with Live Server"
-   - The game should open in your default browser at `http://localhost:5500`
+---
 
-## 📁 Project Structure
+##  Experimental Methodology
 
-- `index.html` - Main game interface
-- `api-call.js` - ML model API integration
-- `cam.js` - Webcam handling and gesture processing
-- `keyboard.js` - Keyboard controls implementation
-- `maze.js` - Maze game logic
-- `mp.js` - Media processing utilities
+### Phase 1: Individual Model Evaluation
+We evaluated five core machine learning algorithms:
 
-## 🔧 Important Implementation Note
+| Algorithm | Type | Key Strengths |
+|-----------|------|---------------|
+| **Random Forest** | Ensemble | Robust to overfitting, handles mixed data types |
+| **Support Vector Machine** | Kernel-based | Effective in high-dimensional spaces |
+| **Extra Trees** | Ensemble | Fast training, reduces overfitting |
+| **K-Nearest Neighbors** | Instance-based | Simple, effective for local patterns |
+| **Logistic Regression** | Linear | Interpretable, probabilistic outputs |
 
-In `api-call.js`, there is a TODO section that needs to be implemented:
+### Phase 2: Hyperparameter Optimization
+Each model underwent systematic hyperparameter tuning using GridSearchCV to identify optimal configurations.
 
-```javascript
-// TODO: Call your model's api here
-// and return the predicted label
-// Possible labels: "up", "down", "left", "right", null
-// null means stop & wait for the next gesture
+### Phase 3: Ensemble Methods
+Advanced ensemble techniques were applied to combine the strengths of individual models:
+- **Stacking Classifier**: Meta-learning approach with Logistic Regression
+- **Voting Classifier**: Soft voting consensus mechanism
+
+---
+
+##  Hyperparameter Optimization Results
+
+###  Random Forest
+```python
+param_grid = {
+    'n_estimators': [50, 100, 200, 300], 
+    'max_depth': [10, 20, 30, None],  
+    'min_samples_split': [2, 5, 10],   
+    'min_samples_leaf': [1, 2, 4]      
+}
 ```
 
-You need to replace the current random label generation with your actual ML model API call. The function should:
-- Take the processed tensor (`processed_t`) as input
-- Call your deployed ML model's API
-- Return one of these labels: "up", "down", "left", "right", or null
+**Optimal Configuration:**
+- `n_estimators`: 300
+- `max_depth`: None (unlimited)
+- `min_samples_split`: 2
+- `min_samples_leaf`: 1
+- **Validation Accuracy**: 96.17%
 
-## 🎮 Controls
+![Random Forest Hyperparameter Tuning](img/img2.png)
 
-The game can be controlled through:
-- Hand gestures (via webcam)
-- Keyboard arrows (as fallback)
+###  Support Vector Machine
+**Optimal Configuration:**
+- `C`: 100 (regularization parameter)
+- `gamma`: 0.001 (kernel coefficient)
+- `kernel`: 'rbf' (radial basis function)
+- **Validation Accuracy**: 95.93%
+
+###  Extra Trees Classifier
+**Optimal Configuration:**
+- `n_estimators`: 50
+- `max_depth`: 10
+- `min_samples_split`: 2
+- `min_samples_leaf`: 1
+- **Validation Accuracy**: 95.93%
+
+###  K-Nearest Neighbors
+**Optimal Configuration:**
+- `n_neighbors`: 3
+- `weights`: 'uniform'
+- `metric`: 'euclidean'
+- **Validation Accuracy**: 95.93%
+
+---
+
+##  Model Performance Comparison
+
+### Individual Model Results
+
+| Model | Accuracy | Rank | Key Insight |
+|-------|----------|------|-------------|
+| **Random Forest** | **96.17%** | 🥇 | Best individual performer with robust generalization |
+| **SVM (RBF)** | 95.93% | 🥈 | Strong performance in high-dimensional space |
+| **Extra Trees** | 95.93% | 🥈 | Fast training with competitive accuracy |
+| **KNN** | 95.66% | 4th | Simple yet effective local pattern recognition |
+| **Logistic Regression** | 89.11% | 5th | Baseline linear model performance |
+
+![Individual Model Comparison](img/img3.png)
+
+###  Ensemble Method Results
+
+| Ensemble Method | Accuracy | Improvement | Strategy |
+|----------------|----------|-------------|----------|
+| **Stacking Classifier** | **98.12%** | +1.95% | Meta-learner combines base model predictions |
+| **Voting Classifier** | **97.92%** | +1.75% | Soft voting consensus across 5 models |
+
+---
+
+##  Key Findings & Insights
+
+###  Performance Analysis
+1. **Ensemble Superiority**: Both ensemble methods significantly outperformed individual models
+2. **Random Forest Dominance**: Consistently strong performance across hyperparameter combinations
+3. **Model Complementarity**: Different algorithms captured distinct patterns, enhancing ensemble effectiveness
+
+###  Optimization Impact
+- Grid search improved Random Forest performance by ~4-6% over default parameters
+- Hyperparameter tuning was crucial for SVM optimization (C and gamma parameters)
+- Ensemble methods provided an additional 1.75-1.95% accuracy boost
+
+###  Experiment Tracking
+MLflow integration enabled:
+- Systematic parameter tracking across 144+ Random Forest combinations
+- Visual comparison of model performance metrics
+- Reproducible experiment documentation
+
+![MLflow Experiment Tracking](img/img1.png)
+
+---

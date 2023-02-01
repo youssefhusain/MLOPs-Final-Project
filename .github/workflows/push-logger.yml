@@ -1,0 +1,31 @@
+name: Push Logger to README
+ 
+on:
+  push:
+    branches:
+      - model-test
+
+jobs:
+  log-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Log Push
+      run: |
+        echo "## Push Log - $(date)" >> history.md
+        echo "**Developer:** ${{ github.actor }}" >> history.md
+        echo "**Branch:** ${{ github.ref_name }}" >> history.md
+        echo "---" >> history .md
+
+    - name: Commit
+      run: |
+        git config user.name "GitHub Action"
+        git config user.email "action@github.com"
+        git add history.md
+        git commit -m "Auto-update README" || exit 0
+        git push
