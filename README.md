@@ -8,7 +8,6 @@
 ![Monitoring](https://img.shields.io/badge/Monitoring-Grafana-orange?style=for-the-badge&logo=grafana)
 </div>
 
-
 ---
 
 # Churn Prediction System
